@@ -77,3 +77,25 @@ document.getElementById('categoryFilter').addEventListener('change', (e) => {
 
 // Run display automatically when the page finishes loading
 displayListings('All');
+// Add a Search Box to the Map
+L.Control.geocoder({
+  defaultMarkGeocode: false,
+  placeholder: "Search places in Tobago...",
+  geocoder: L.Control.Geocoder.nominatim({
+    geocodingQueryParams: {
+      viewbox: "-60.91,11.08,-60.44,11.35", 
+      bounded: 1
+    }
+  })
+})
+.on('markgeocode', function(e) {
+  var latlng = e.geocode.center;
+  
+  L.marker(latlng)
+    .addTo(map)
+    .bindPopup("<b>" + e.geocode.name + "</b>")
+    .openPopup();
+    
+  map.setView(latlng, 15);
+})
+.addTo(map);
